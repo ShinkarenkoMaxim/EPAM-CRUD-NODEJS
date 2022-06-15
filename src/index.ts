@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 
 const envPath = resolve(process.cwd(), '.env');
 
-import { createUser, getAllUsers } from './controllers/user.js';
+import { createUser, getAllUsers, getUserById } from './controllers/user.js';
 import { notFoundError } from './utils/errorsNotifiers.js';
 
 dotenv.config({ path: envPath });
@@ -19,6 +19,12 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
         getAllUsers(req, res);
       } else if (req.method === 'POST') {
         createUser(req, res);
+      }
+    }
+
+    if (endpoint === 'user') {
+      if (req.method === 'GET') {
+        getUserById(req, res);
       }
     }
   } else {

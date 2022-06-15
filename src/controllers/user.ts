@@ -13,7 +13,10 @@ import { getPostData } from '../utils/postData.js';
 
 const userCollection = new UserCollection();
 
-export const getAllUsers = (req: IncomingMessage, res: ServerResponse) => {
+export const getAllUsers = (
+  req: IncomingMessage,
+  res: ServerResponse
+): void => {
   try {
     const users = JSON.stringify(userCollection.collection);
 
@@ -25,7 +28,26 @@ export const getAllUsers = (req: IncomingMessage, res: ServerResponse) => {
   }
 };
 
-export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
+export const getUserById = (
+  req: IncomingMessage,
+  res: ServerResponse
+): void => {
+  try {
+    const userId = req.url.split('/')[3];
+    const user = JSON.stringify(userCollection.getById(userId));
+
+    successfulResponse(res, user);
+  } catch (err) {
+    console.log(err);
+
+    internalServerError(res);
+  }
+};
+
+export const createUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
     const body = await getPostData(req);
 
