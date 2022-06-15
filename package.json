@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/index.js",
-    "dev": "nodemon dist/index.js",
-    "watch": "tsc -w"
+    "start:dev": "nodemon --exec 'node --loader ts-node/esm' ./src/index.ts",
+    "start:prod": "tsc && NODE_ENV=production node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +27,7 @@
   "dependencies": {
     "@types/uuid": "^8.3.4",
     "dotenv": "^16.0.1",
+    "ts-node": "^10.8.1",
     "uuid": "^8.3.2"
   },
   "type": "module"
