@@ -10,17 +10,19 @@ export interface User {
 export class UserCollection {
   collection: User[] = [];
 
-  getById(id: string) {
+  getById(id: string): User {
     return this.collection.filter((user) => user.id === id)[0];
   }
 
   create(data: User): User {
     const user = { id: uuidv4(), ...data };
+
     this.collection.push(user);
+
     return user;
   }
 
-  update(id: string, data: User) {
+  update(id: string, data: User): User {
     const { username, age, hobbies } = data;
 
     // Compare input data and save to existing object
@@ -35,5 +37,13 @@ export class UserCollection {
     this.collection[collectionKey] = newUser;
 
     return newUser;
+  }
+
+  delete(id: string): void {
+    const collectionKey = this.collection.findIndex((user) => user.id === id);
+
+    this.collection.splice(collectionKey, 1);
+
+    return;
   }
 }

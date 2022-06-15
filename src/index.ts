@@ -9,6 +9,7 @@ import {
   getAllUsers,
   getUserById,
   updateUser,
+  deleteUser,
 } from './controllers/user.js';
 import { notFoundError } from './utils/errorsNotifiers.js';
 
@@ -36,6 +37,10 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
           break;
         case 'PUT':
           updateUser(req, res);
+
+          break;
+        case 'DELETE':
+          deleteUser(req, res);
 
           break;
         default:
