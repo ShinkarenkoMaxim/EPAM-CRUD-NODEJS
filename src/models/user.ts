@@ -19,4 +19,21 @@ export class UserCollection {
     this.collection.push(user);
     return user;
   }
+
+  update(id: string, data: User) {
+    const { username, age, hobbies } = data;
+
+    // Compare input data and save to existing object
+    const collectionKey = this.collection.findIndex((user) => user.id === id);
+    const currentUser = this.collection[collectionKey];
+    const newUser = Object.assign(currentUser, {
+      username,
+      age,
+      hobbies,
+    });
+
+    this.collection[collectionKey] = newUser;
+
+    return newUser;
+  }
 }

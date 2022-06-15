@@ -90,3 +90,53 @@ export const createUser = async (
     }
   }
 };
+
+export const updateUser = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
+  try {
+    const userId = req.url.split('/')[3];
+
+    // Check if valid UUID
+    const isValidUUID = validate(userId);
+    if (!isValidUUID) {
+      notValidUserIdError(res);
+      return;
+    }
+
+    // Check if user exist
+    const hasUser = userCollection.getById(userId);
+    if (!hasUser) {
+      userIsNotExistError(res);
+      return;
+    }
+
+    const body = await getPostData(req);
+
+    // Check if body is not empty
+    if (body) {
+      const data = JSON.parse(body);
+      const hasRequiredFields =
+        'username' in data && 'age' in data && 'hobbies' in data;
+
+      // Check if has required fields
+      if (hasRequiredFields) {
+        const user = JSON.stringify(userCollection.update(userId, data));
+
+        successfulResponse(res, user);
+      } else {
+        requiredFieldsError(res);
+      }
+    } else {
+      missedBodyError(res);
+    }
+  } catch (err) {
+    // Handle invalid JSON. Otherwise handle Internal Error
+    if (err instanceof SyntaxError) {
+      invalidSyntaxError(res, err.message);
+    } else {
+      internalServerError(res);
+    }
+  }
+};
