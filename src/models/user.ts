@@ -11,7 +11,7 @@ export class UserCollection {
   collection: User[] = [];
 
   getById(id: string) {
-    return this.collection.filter((user) => user.id === id);
+    return this.collection.filter((user) => user.id === id)[0];
   }
 
   create(data: User): User {

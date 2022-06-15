@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
+import { validate } from 'uuid';
 
 import { UserCollection } from '../models/user.js';
 
@@ -7,7 +8,9 @@ import {
   internalServerError,
   invalidSyntaxError,
   missedBodyError,
+  notValidUserIdError,
   requiredFieldsError,
+  userIsNotExistError,
 } from '../utils/errorsNotifiers.js';
 import { getPostData } from '../utils/postData.js';
 
@@ -34,9 +37,19 @@ export const getUserById = (
 ): void => {
   try {
     const userId = req.url.split('/')[3];
-    const user = JSON.stringify(userCollection.getById(userId));
+    const isValidUUID = validate(userId);
 
-    successfulResponse(res, user);
+    if (isValidUUID) {
+      const user = userCollection.getById(userId);
+
+      if (user) {
+        successfulResponse(res, JSON.stringify(user));
+      } else {
+        userIsNotExistError(res);
+      }
+    } else {
+      notValidUserIdError(res);
+    }
   } catch (err) {
     console.log(err);
 

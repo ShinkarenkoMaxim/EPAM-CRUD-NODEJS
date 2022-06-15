@@ -39,3 +39,23 @@ export const invalidSyntaxError = (res: ServerResponse, msg: string) => {
     })
   );
 };
+
+export const notValidUserIdError = (res: ServerResponse) => {
+  res.writeHead(400, { 'Content-Type': 'application/json' });
+  res.end(
+    JSON.stringify({
+      ok: false,
+      message: 'Not valid userId',
+    })
+  );
+};
+
+export const userIsNotExistError = (res: ServerResponse) => {
+  res.writeHead(404, { 'Content-Type': 'application/json' });
+  res.end(
+    JSON.stringify({
+      ok: false,
+      message: 'User is not exist.',
+    })
+  );
+};
