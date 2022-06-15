@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 const envPath = resolve(process.cwd(), '.env');
 
 import { createUser, getAllUsers } from './controllers/user.js';
+import { notFoundError } from './utils/errorsNotifiers.js';
 
 dotenv.config({ path: envPath });
 
@@ -21,8 +22,7 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
       }
     }
   } else {
-    res.statusCode = 404;
-    res.end();
+    notFoundError(res);
   }
 };
 
