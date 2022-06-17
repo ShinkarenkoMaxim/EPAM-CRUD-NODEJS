@@ -55,4 +55,27 @@ describe('Users test suite', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(responseFromCreated.body);
   });
+
+  it('try to update created record by id', async () => {
+    // At first create user to get userId
+    const responseFromCreated = await request(server)
+      .post('/api/users')
+      .set('Accept', 'application/json')
+      .send(JSON.stringify(userMockData));
+
+    // Get user by id
+    const response = await request(server)
+      .put(`/api/users/${responseFromCreated.body.id}`)
+      .set('Accept', 'application/json')
+      .send(
+        JSON.stringify({
+          username: 'max',
+          age: 25,
+          hobbies: ['lol'],
+        })
+      );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.id).toEqual(responseFromCreated.body.id);
+  });
 });
