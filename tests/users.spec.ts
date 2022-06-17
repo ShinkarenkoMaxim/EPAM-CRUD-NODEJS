@@ -12,6 +12,12 @@ const HOSTNAME = 'localhost';
 const PORT = process.env.PORT;
 const BASE_URL = `http://localhost:${process.env.PORT}`;
 
+const userMockData = {
+  username: 'test',
+  age: 20,
+  hobbies: ['test'],
+};
+
 describe('Users test suite', () => {
   it('get all users', async () => {
     const response = await request(server).get('/api/users');
@@ -21,21 +27,32 @@ describe('Users test suite', () => {
   });
 
   it('create new user', async () => {
-    const mockData = {
-      username: 'test',
-      age: 20,
-      hobbies: ['test'],
-    };
     const response = await request(server)
       .post('/api/users')
       .set('Accept', 'application/json')
-      .send(JSON.stringify(mockData));
+      .send(JSON.stringify(userMockData));
 
     expect(response.statusCode).toBe(201);
 
     // Check all sended fields bypassing id field generated from the server
-    expect(response.body.username).toEqual(mockData.username);
-    expect(response.body.age).toEqual(mockData.age);
-    expect(response.body.hobbies).toEqual(mockData.hobbies);
+    expect(response.body.username).toEqual(userMockData.username);
+    expect(response.body.age).toEqual(userMockData.age);
+    expect(response.body.hobbies).toEqual(userMockData.hobbies);
+  });
+
+  it('try to get created record by id', async () => {
+    // At first create user to get userId
+    const responseFromCreated = await request(server)
+      .post('/api/users')
+      .set('Accept', 'application/json')
+      .send(JSON.stringify(userMockData));
+
+    // Get user by id
+    const response = await request(server).get(
+      `/api/users/${responseFromCreated.body.id}`
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(responseFromCreated.body);
   });
 });
