@@ -93,4 +93,25 @@ describe('Users test suite', () => {
 
     expect(response.statusCode).toBe(204);
   });
+
+  it('try to get deleted record by id', async () => {
+    // At first create user to get userId
+    const responseFromCreated = await request(server)
+      .post('/api/users')
+      .set('Accept', 'application/json')
+      .send(JSON.stringify(userMockData));
+
+    // Get user by id
+    const responseFromDeleted = await request(server).delete(
+      `/api/users/${responseFromCreated.body.id}`
+    );
+
+    // Get user by id
+    const response = await request(server).get(
+      `/api/users/${responseFromCreated.body.id}`
+    );
+
+    // User should not found
+    expect(response.statusCode).toBe(404);
+  });
 });
