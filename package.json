@@ -6,7 +6,8 @@
   "scripts": {
     "test": "vitest run",
     "start:dev": "nodemon --exec 'node --loader ts-node/esm' ./src/index.ts",
-    "start:prod": "tsc && NODE_ENV=production node dist/index.js"
+    "start:prod": "tsc && NODE_ENV=production node dist/index.js",
+    "start:multi": "tsc && NODE_ENV=production node dist/multi.js"
   },
   "repository": {
     "type": "git",
