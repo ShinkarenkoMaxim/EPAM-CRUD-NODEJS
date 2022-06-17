@@ -78,4 +78,19 @@ describe('Users test suite', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.id).toEqual(responseFromCreated.body.id);
   });
+
+  it('try to delete created record by id', async () => {
+    // At first create user to get userId
+    const responseFromCreated = await request(server)
+      .post('/api/users')
+      .set('Accept', 'application/json')
+      .send(JSON.stringify(userMockData));
+
+    // Get user by id
+    const response = await request(server).delete(
+      `/api/users/${responseFromCreated.body.id}`
+    );
+
+    expect(response.statusCode).toBe(204);
+  });
 });
