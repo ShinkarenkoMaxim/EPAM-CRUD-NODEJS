@@ -1,0 +1,38 @@
+{
+  "name": "epam-crud-nodejs",
+  "version": "1.0.0",
+  "description": "Simple CRUD API with Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "start:dev": "nodemon --exec 'node --loader ts-node/esm' ./src/index.ts",
+    "start:prod": "tsc && NODE_ENV=production node dist/index.js",
+    "start:multi": "tsc && NODE_ENV=production node dist/multi.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShinkarenkoMaxim/epam-crud-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShinkarenkoMaxim/epam-crud-nodejs/issues"
+  },
+  "homepage": "https://github.com/ShinkarenkoMaxim/epam-crud-nodejs#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.42",
+    "@types/supertest": "^2.0.12",
+    "@types/uuid": "^8.3.4",
+    "nodemon": "^2.0.16",
+    "supertest": "^6.2.3",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3",
+    "vitest": "^0.15.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "uuid": "^8.3.2"
+  },
+  "type": "module"
+}
